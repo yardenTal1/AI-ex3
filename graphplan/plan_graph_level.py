@@ -110,7 +110,7 @@ class PlanGraphLevel(object):
                     props_and_producers[added.get_name()] = [a]
                 else:
                     props_and_producers[added.get_name()].append(a)
-        for key, value in props_and_producers:
+        for key, value in props_and_producers.items():
             new_prop = Proposition(key)
             new_prop.set_producers(value)
             self.proposition_layer.add_proposition(new_prop)

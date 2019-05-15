@@ -49,6 +49,16 @@ class GraphPlan(object):
             prop_layer_init.add_proposition(prop)
         pg_init = PlanGraphLevel()
         pg_init.set_proposition_layer(prop_layer_init)
+        print('props')
+        bla = pg_init.get_proposition_layer().get_propositions()
+        for b in bla:
+            print(b)
+        print()
+        print('actions')
+        bla = pg_init.get_action_layer().get_actions()
+        for b in bla:
+            print(b)
+        print()
         self.graph.append(pg_init)
         size_no_good = -1
 
@@ -71,7 +81,16 @@ class GraphPlan(object):
             pg_next.expand(
                 self.graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
             self.graph.append(pg_next)  # appending the new level to the plan graph
-
+            print('props')
+            bla = pg_next.get_proposition_layer().get_propositions()
+            for b in bla:
+                print(b)
+            print()
+            print('actions')
+            bla = pg_next.get_action_layer().get_actions()
+            for b in bla:
+                print(b)
+            print()
             size_no_good = len(self.no_goods[level])  # remember size of nogood table
 
         plan_solution = self.extract(self.graph, self.goal, level)
