@@ -227,7 +227,18 @@ def independent_pair(a1, a2):
     a1.is_pos_effect(p) returns true is p is in a1.get_add()
     a1.is_neg_effect(p) returns true is p is in a1.get_delete()
     """
-    "*** YOUR CODE HERE ***"
+    set_delete_a1 = set(a1.get_delete())
+    set_add_a1 = set(a1.get_add())
+    set_delete_a2 = set(a2.get_delete())
+    set_add_a2 = set(a2.get_add())
+    set_pre_a2 = set(a2.get_pre())
+    set_pre_a1 = set(a1.get_pre())
+
+    if set_delete_a1.intersection(set_add_a2) or set_delete_a2.intersection(set_add_a1):
+        return False
+    elif set_delete_a1.intersection(set_pre_a2) or set_delete_a2.intersection(set_pre_a1):
+        return False
+    return True
 
 
 if __name__ == '__main__':
