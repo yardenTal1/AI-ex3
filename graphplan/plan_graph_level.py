@@ -61,7 +61,7 @@ class PlanGraphLevel(object):
         for a in all_actions:
             if previous_proposition_layer.all_preconds_in_layer(a):
                 if not self.action_pre_req_mutexed(a, previous_proposition_layer):
-                    self.action_layer.addAction(a)
+                    self.action_layer.add_action(a)
 
     @staticmethod
     def action_pre_req_mutexed(action, previous_proposition_layer):
@@ -102,7 +102,18 @@ class PlanGraphLevel(object):
 
         """
         current_layer_actions = self.action_layer.get_actions()
-        "*** YOUR CODE HERE ***"
+        props_and_producers = {}
+        for a in current_layer_actions:
+            added_propositions = a.get_add()
+            for added in added_propositions:
+                if added not in props_and_producers:
+                    props_and_producers[added.get_name()] = [a]
+                else:
+                    props_and_producers[added.get_name()].append(a)
+        for key, value in props_and_producers:
+            new_prop = Proposition(key)
+            new_prop.set_producers(value)
+            self.proposition_layer.add_proposition(new_prop)
 
     def update_mutex_proposition(self):
         """
@@ -115,7 +126,11 @@ class PlanGraphLevel(object):
         """
         current_layer_propositions = self.proposition_layer.get_propositions()
         current_layer_mutex_actions = self.action_layer.get_mutex_actions()
-        "*** YOUR CODE HERE ***"
+        for p1 in current_layer_propositions:
+            for p2 in current_layer_propositions:
+                if p1 != p2 and mutex_propositions(p1, p2, current_layer_mutex_actions):
+                    self.proposition_layer.add_mutex_prop(p1, p2)
+
 
     def expand(self, previous_layer):
         """
@@ -128,8 +143,11 @@ class PlanGraphLevel(object):
         """
         previous_proposition_layer = previous_layer.get_proposition_layer()
         previous_layer_mutex_proposition = previous_proposition_layer.get_mutex_props()
+        self.update_action_layer(previous_proposition_layer)
+        self.update_mutex_actions(previous_layer_mutex_proposition)
+        self.update_proposition_layer()
+        self.update_mutex_proposition()
 
-        "*** YOUR CODE HERE ***"
 
     def expand_without_mutex(self, previous_layer):
         """
