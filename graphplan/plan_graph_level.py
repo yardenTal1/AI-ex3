@@ -146,6 +146,11 @@ def have_competing_needs(a1, a2, mutex_props):
           returns true if p and q are mutex in the previous level
     """
     "*** YOUR CODE HERE ***"
+    for prop1 in a1.get_pre():
+        for prop2 in a2.get_pre():
+            if Pair(prop1, prop2) in mutex_props:
+                return True
+    return False
 
 
 def mutex_propositions(prop1, prop2, mutex_actions_list):
@@ -156,4 +161,8 @@ def mutex_propositions(prop1, prop2, mutex_actions_list):
     You might want to use this function:
     prop1.get_producers() returns the set of all the possible actions in the layer that have prop1 on their add list
     """
-    "*** YOUR CODE HERE ***"
+    for action1 in prop1.get_producers():
+        for action2 in prop2.get_producers():
+            if Pair(action1, action2) not in mutex_actions_list:
+                return False
+    return True
