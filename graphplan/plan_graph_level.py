@@ -63,7 +63,8 @@ class PlanGraphLevel(object):
                 if not self.action_pre_req_mutexed(a, previous_proposition_layer):
                     self.action_layer.addAction(a)
 
-    def action_pre_req_mutexed(self, action, previous_proposition_layer):
+    @staticmethod
+    def action_pre_req_mutexed(action, previous_proposition_layer):
         for p1 in action.get_pre():
             for p2 in action.get_pre():
                 if p1 != p2 and previous_proposition_layer.is_mutex(p1, p2):
