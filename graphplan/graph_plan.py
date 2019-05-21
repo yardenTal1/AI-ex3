@@ -226,7 +226,6 @@ def independent_pair(a1, a2):
     a1.is_pos_effect(p) returns true is p is in a1.get_add()
     a1.is_neg_effect(p) returns true is p is in a1.get_delete()
     """
-    # TODO michal did with pos effect and neg effect and didn't create sets
     set_delete_a1 = set(a1.get_delete())
     set_add_a1 = set(a1.get_add())
     set_delete_a2 = set(a2.get_delete())
