@@ -102,6 +102,16 @@ class GraphPlan(object):
             pg_next = PlanGraphLevel()  # create next level of the graph by expanding
             pg_next.expand(self.graph[level - 1])  # create next level of the graph by expanding
             self.graph.append(pg_next)
+            print('props')
+            bla = pg_next.get_proposition_layer().get_propositions()
+            for b in bla:
+                print(b)
+            print()
+            print('actions')
+            bla = pg_next.get_action_layer().get_actions()
+            for b in bla:
+                print(b)
+            print()
             plan_solution = self.extract(self.graph, self.goal, level)  # try to extract a plan again
             if plan_solution is None and self.is_fixed(level):  # if failed and reached fixed point
                 if len(self.no_goods[level - 1]) == len(self.no_goods[level]):
@@ -246,6 +256,7 @@ def independent_pair(a1, a2):
     a1.is_pos_effect(p) returns true is p is in a1.get_add()
     a1.is_neg_effect(p) returns true is p is in a1.get_delete()
     """
+    # TODO michal did with pos effect and neg effect and didn't create sets
     set_delete_a1 = set(a1.get_delete())
     set_add_a1 = set(a1.get_add())
     set_delete_a2 = set(a2.get_delete())
@@ -258,7 +269,28 @@ def independent_pair(a1, a2):
     elif set_delete_a1.intersection(set_pre_a2) or set_delete_a2.intersection(set_pre_a1):
         return False
     return True
-
+# def independent_pair(a1, a2):
+#     a1_delete_actions = a1.get_delete()
+#     a2_delete_actions = a2.get_delete()
+#     for act in a1_delete_actions:
+#         if a2.is_pos_effect(act):
+#             return False
+#     for act in a2_delete_actions:
+#         if a1.is_pos_effect(act):
+#             return False
+#
+#     #in order to check for interfere the delete_action for a1 should not
+#     #be in the pre-cond of a2 and vice versa
+#     a1_delete_actions = a1.get_delete()
+#     a2_delete_actions = a2.get_delete()
+#     for act in a1_delete_actions:
+#         if a2.is_pre_cond(act):
+#             return False
+#     for act in a2_delete_actions:
+#         if a1.is_pre_cond(act):
+#             return False
+#
+#     return True
 
 if __name__ == '__main__':
     import sys
