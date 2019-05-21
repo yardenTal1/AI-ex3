@@ -99,51 +99,21 @@ class PlanGraphLevel(object):
         dict() creates a new dictionary that might help to keep track on the propositions that you've
                already added to the layer
         self.proposition_layer.add_proposition(prop) adds the proposition prop to the current layer
+
         """
         current_layer_actions = self.action_layer.get_actions()
-        "* YOUR CODE HERE *"
-        prop_dict = dict()
-        for action in current_layer_actions:
-            # update the prop_dict dictionary of the propositions and the
-            # action which produces them
-            for prop in action.get_add():
-                if prop not in prop_dict:
-                    prop_dict[prop] = []
-                prop_dict[prop].append(action)
-        # now we will update the proposition_layer by creating new prop
-        # object in order to not destroy the previous ones.
-        for prop in prop_dict:
-            new_prop = Proposition(prop.name)
-            new_prop.set_producers(prop_dict[prop])
+        props_and_producers = {}
+        for a in current_layer_actions:
+            added_propositions = a.get_add()
+            for added in added_propositions:
+                if added not in props_and_producers:
+                    props_and_producers[added] = [a]
+                else:
+                    props_and_producers[added].append(a)
+        for key, value in props_and_producers.items():
+            new_prop = Proposition(key.name)
+            new_prop.set_producers(value)
             self.proposition_layer.add_proposition(new_prop)
-
-    # def update_proposition_layer(self):
-    #     """
-    #     Updates the propositions in the current proposition layer,
-    #     given the current action layer.
-    #     don't forget to update the producers list!
-    #     Note that same proposition in different layers might have different producers lists,
-    #     hence you should create two different instances.
-    #     current_layer_actions is the set of all the actions in the current layer.
-    #     You might want to use those functions:
-    #     dict() creates a new dictionary that might help to keep track on the propositions that you've
-    #            already added to the layer
-    #     self.proposition_layer.add_proposition(prop) adds the proposition prop to the current layer
-    #
-    #     """
-    #     current_layer_actions = self.action_layer.get_actions()
-    #     props_and_producers = {}
-    #     for a in current_layer_actions:
-    #         added_propositions = a.get_add()
-    #         for added in added_propositions:
-    #             if added not in props_and_producers:
-    #                 props_and_producers[added.get_name()] = [a]
-    #             else:
-    #                 props_and_producers[added.get_name()].append(a)
-    #     for key, value in props_and_producers.items():
-    #         new_prop = Proposition(key)
-    #         new_prop.set_producers(value)
-    #         self.proposition_layer.add_proposition(new_prop)
 
     def update_mutex_proposition(self):
         """
