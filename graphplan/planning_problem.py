@@ -140,7 +140,7 @@ def level_sum(state, planning_problem):
     # initialization
     level = 0
     graph = []
-    level_sum = 0
+    level_sum_counter = 0
     goals_set = set(planning_problem.goal)
     # create first layer of the graph, note it only has a proposition layer which consists of the initial state.
 
@@ -153,16 +153,19 @@ def level_sum(state, planning_problem):
     while not planning_problem.is_goal_state(graph[level].get_proposition_layer().get_propositions()):
         for prop in graph[level].get_proposition_layer().get_propositions():
             if prop in goals_set:
-                level_sum += level
+                level_sum_counter += level +1
                 goals_set.remove(prop)
         if is_fixed(graph, level):
             return float('inf')
         level += 1
         pg_next = PlanGraphLevel()  # create new PlanGraph object
-        pg_next.expand_without_mutex(
-            graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
+        pg_next.expand_without_mutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
         graph.append(pg_next)  # appending the new level to the plan graph
-    return level_sum
+    for prop in graph[level].get_proposition_layer().get_propositions():
+        if prop in goals_set:
+            level_sum_counter += level + 1
+            goals_set.remove(prop)
+    return level_sum_counter
 
 
 def is_fixed(graph, level):
