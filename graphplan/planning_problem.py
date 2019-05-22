@@ -67,7 +67,7 @@ class PlanningProblem:
         successors_tuples = []
         for act in self.actions_without_noops:
             if act.all_preconds_in_list(state):
-                successor = frozenset((state - act.get_delete()) | act.get_add())
+                successor = frozenset((state - set(act.get_delete())) | set(act.get_add()))
                 successors_tuples.append((successor, act, 1))
         return successors_tuples
 
