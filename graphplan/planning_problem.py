@@ -70,7 +70,6 @@ class PlanningProblem:
                 successors_tuples.append((successor, act, 1))
         return successors_tuples
 
-
     @staticmethod
     def get_cost_of_actions(actions):
         return len(actions)
@@ -123,12 +122,12 @@ def max_level(state, planning_problem):
     pg_init.set_proposition_layer(prop_layer_init)
     graph.append(pg_init)
     while not planning_problem.is_goal_state(graph[level].get_proposition_layer().get_propositions()):
-        if level != 0 and len(graph[level].get_proposition_layer().get_propositions()) == \
-                len(graph[level - 1].get_proposition_layer().get_propositions()):
+        if is_fixed(graph, level):
             return float('inf')
         level += 1
         pg_next = PlanGraphLevel()  # create new PlanGraph object
-        pg_next.expand_without_mutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
+        pg_next.expand_without_mutex(
+            graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
         graph.append(pg_next)  # appending the new level to the plan graph
     return level
 
