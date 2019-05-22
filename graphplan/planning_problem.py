@@ -25,6 +25,7 @@ class PlanningProblem:
         """
         p = PgParser(domain_file, problem_file)
         self.actions, self.propositions = p.parse_actions_and_propositions()
+        self.actions_without_noops = list(self.actions)
         # list of all the actions and list of all the propositions
 
         initial_state, goal = p.parse_problem()
@@ -41,13 +42,13 @@ class PlanningProblem:
         self.expanded = 0
 
     def get_start_state(self):
-        "*** YOUR CODE HERE ***"
+        return self.initialState
 
     def is_goal_state(self, state):
         """
         Hint: you might want to take a look at goal_state_not_in_prop_payer function
         """
-        "*** YOUR CODE HERE ***"
+        return not self.goal_state_not_in_prop_layer(state)
 
     def get_successors(self, state):
         """
@@ -63,10 +64,16 @@ class PlanningProblem:
         Note that a state *must* be hashable!! Therefore, you might want to represent a state as a frozenset
         """
         self.expanded += 1
-        "*** YOUR CODE HERE ***"
+        successors_tuples = []
+        for act in self.actions_without_noops:
+            if act.all_preconds_in_list(state):
+                successor = frozenset((state - act.get_delete()) | act.get_add())
+                successors_tuples.append((successor, act, 1))
+        return successors_tuples
+
 
     @staticmethod
-    def get_cost_of_actions( actions):
+    def get_cost_of_actions(actions):
         return len(actions)
 
     def goal_state_not_in_prop_layer(self, propositions):
