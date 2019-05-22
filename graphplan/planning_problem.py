@@ -27,7 +27,6 @@ class PlanningProblem:
         self.actions, self.propositions = p.parse_actions_and_propositions()
         self.actions_without_noops = list(self.actions)
         # list of all the actions and list of all the propositions
-
         initial_state, goal = p.parse_problem()
         # the initial state and the goal state are lists of propositions
 
@@ -116,13 +115,13 @@ def max_level(state, planning_problem):
     level = 0
     graph = []
     # create first layer of the graph, note it only has a proposition layer which consists of the initial state.
+
     prop_layer_init = PropositionLayer()
     for prop in state:
         prop_layer_init.add_proposition(prop)
     pg_init = PlanGraphLevel()
     pg_init.set_proposition_layer(prop_layer_init)
     graph.append(pg_init)
-
     while not planning_problem.is_goal_state(graph[level].get_proposition_layer().get_propositions()):
         if level != 0 and len(graph[level].get_proposition_layer().get_propositions()) == \
                 len(graph[level - 1].get_proposition_layer().get_propositions()):
