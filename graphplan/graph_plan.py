@@ -106,9 +106,6 @@ class GraphPlan(object):
         self.no_goods[level].append([sub_goals])
         return None
 
-
-
-
     def gp_search(self, graph, sub_goals, _plan, level):
         if len(sub_goals) == 0:
             new_goals = []
