@@ -115,8 +115,6 @@ def max_level(state, planning_problem):
     # initialization
     level = 0
     graph = []
-    no_goods = []  # make sure you update noGoods in your backward search!
-    no_goods.append([])
     # create first layer of the graph, note it only has a proposition layer which consists of the initial state.
     prop_layer_init = PropositionLayer()
     for prop in state:
@@ -124,29 +122,15 @@ def max_level(state, planning_problem):
     pg_init = PlanGraphLevel()
     pg_init.set_proposition_layer(prop_layer_init)
     graph.append(pg_init)
-    # size_no_good = -1
-
-    """
-    While the layer does not contain all of the propositions in the goal state,
-    or some of these propositions are mutex in the layer we,
-    and we have not reached the fixed point, continue expanding the graph
-    """
 
     while not planning_problem.is_goal_state(graph[level].get_proposition_layer().get_propositions()):
         if level != 0 and len(graph[level].get_proposition_layer().get_propositions()) == \
                 len(graph[level - 1].get_proposition_layer().get_propositions()):
             return float('inf')
-            # this means we stopped the while loop above because we reached a fixed point in the graph.
-            #  nothing more to do, we failed!
-
-        no_goods.append([])
-        level = level + 1
+        level += 1
         pg_next = PlanGraphLevel()  # create new PlanGraph object
-        pg_next.expand_without_mutex(
-            graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
+        pg_next.expand_without_mutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
         graph.append(pg_next)  # appending the new level to the plan graph
-        # size_no_good = len(self.no_goods[level])  # remember size of nogood table
-
     return level
 
 
