@@ -238,28 +238,6 @@ def independent_pair(a1, a2):
     elif set_delete_a1.intersection(set_pre_a2) or set_delete_a2.intersection(set_pre_a1):
         return False
     return True
-# def independent_pair(a1, a2):
-#     a1_delete_actions = a1.get_delete()
-#     a2_delete_actions = a2.get_delete()
-#     for act in a1_delete_actions:
-#         if a2.is_pos_effect(act):
-#             return False
-#     for act in a2_delete_actions:
-#         if a1.is_pos_effect(act):
-#             return False
-#
-#     #in order to check for interfere the delete_action for a1 should not
-#     #be in the pre-cond of a2 and vice versa
-#     a1_delete_actions = a1.get_delete()
-#     a2_delete_actions = a2.get_delete()
-#     for act in a1_delete_actions:
-#         if a2.is_pre_cond(act):
-#             return False
-#     for act in a2_delete_actions:
-#         if a1.is_pre_cond(act):
-#             return False
-#
-#     return True
 
 if __name__ == '__main__':
     import sys
