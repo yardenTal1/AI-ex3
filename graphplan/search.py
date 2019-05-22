@@ -96,7 +96,7 @@ def a_star_search(problem, heuristic=null_heuristic):
     Search the node that has the lowest combined cost and heuristic first.
     """
     def f(node):
-        return node.cost + heuristic(node.value[0], problem=problem)
+        return node.cost + heuristic(node.value[0], problem)
 
     return general_search(problem, util.PriorityQueueWithFunction(f))
 
